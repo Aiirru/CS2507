@@ -45,6 +45,52 @@ check_sign:
 	addi $s0, $s0, 1 #moving pointer past sign bit if it exists
 	
 intloop:
+	#parsing the integer part xxx
+	move $a0, $s0
+	jal parse_digits
+	move $s2, $v0	#recording xxx
+	move $s0, $a0
+	lb $t0, 0($s0)
+	bne $t0, 46, parse_complete	#checking for '.'
+	addi $s0, $s0, 1	#skipping over '.'
+	
+fracloop:
+	#parsing the yyy
+	move $a0, $s0
+	jal parse_digits
+	move $s3, $v0
+	
+	
+	
+parse_complete:
+	#doing floating point
+	
+	
+	
+#generic function that converts a string of ascii digits into an integer accumilator 
+#$a0 is the string to be processed 
+#$v0 is the integer that will multiply by 10 and accumilate each char as its processed	
+	
+parse_digits:
+	li $v0, 0
+
+
+parse_loop:
+	lb $t0, 0($a0)			#gets first digit of number
+	
+	#next 2 lines ensure return on meeting a non numeric char i.e '.' or '\n'
+	
+	blt $t0, 48, parse_done	 	#48 is ascii value for 0
+	bgt $t0, 57, parse_done		#57 is ascii value for 9
+	mul $v0, $v0, 10		#moving the digits 'to the left' for values that are xxx
+	subi $t0, $t0, 48		#convert ascii to int
+	addi $v0, $v0, $t0		
+	addi $a0, $a0, 1		#moves the pointer along to get next digit for loop
+	j parse_loop
+	
+parse_done:
+	jr $ra
+				
 	
 	
 	
