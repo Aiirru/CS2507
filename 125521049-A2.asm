@@ -1,7 +1,7 @@
 # data segment
 .data
 
-string2float: .float 0.0
+str2float: .float 0.0
 prompt1: .asciiz   "Ruairi Counihan 125521049 is implementing the CORE assignment\n"
 prompt2: .asciiz  "Enter a real number [xxx.yyy]"
 string_number: .space 20
@@ -65,13 +65,13 @@ fracloop:
 #at this stage we want to move the integer and decimal into the coprocessor
 parse_complete:
 	#doing floating point
-	mtcl $s2, $f0	#moves into $f0
+	mtc1 $s2, $f0	#moves into $f0
 	cvt.s.w $f0, $f0	#$f0 is = xxx.000
 	
-	mtcl $s3 $f1
+	mtc1 $s3 $f1
 	cvt.s.w $f1 $f1		#$f1 is = yyy.000
 	
-	mtcl $s4, $f2		#scale factor for yyy
+	mtc1 $s4, $f2		#scale factor for yyy
 	cvt.s.w $f2, $f2
 	
 	div.s $f1, $f1, $f2	#$f1 is = yyy/scale
@@ -83,6 +83,7 @@ parse_complete:
 	
 store_float:
 	s.s $f0, str2float	#store the float in the data segment
+	
 	 
 	
 	
@@ -107,7 +108,7 @@ parse_loop:
 	bgt $t0, 57, parse_done		#57 is ascii value for 9
 	mul $v0, $v0, 10		#moving the digits 'to the left' for values that are xxx
 	subi $t0, $t0, 48		#convert ascii to int
-	addi $v0, $v0, $t0
+	add $v0, $v0, $t0
 	
 	mul $v1, $v1, 10		#for every y thats seen we need to x 10
 	
