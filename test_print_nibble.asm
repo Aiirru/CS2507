@@ -1,6 +1,7 @@
 .data
 
-str2float: .word 0x000000BA
+str2float: .word 0x000000AB
+nibble_buffer: .space 2		#need this because syscall 11 isnt allowed
 
 .text
 .globl main
@@ -27,7 +28,11 @@ is_letter:
 	
 	
 do_print:
-	li $v0, 11
+	la $t2, nibble_buffer
+	sb $a0, 0($t2)
+	sb $zero, 1($t2)
+	move $a0, $t2
+	li $v0, 4
 	syscall
 	
 	jr $ra
