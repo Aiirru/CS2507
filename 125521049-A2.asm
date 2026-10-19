@@ -84,11 +84,6 @@ parse_complete:
 store_float:
 	s.s $f0, str2float	#store the float in the data segment
 	
-	 
-	
-	
-	
-	
 	
 	
 #generic function that converts a string of ascii digits into an integer accumilator 
