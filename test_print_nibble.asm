@@ -28,10 +28,10 @@ is_letter:
 	
 	
 do_print:
-	la $t2, nibble_buffer
-	sb $a0, 0($t2)
-	sb $zero, 1($t2)
-	move $a0, $t2
+	la $t2, nibble_buffer	#points to address of buffer
+	sb $a0, 0($t2)		#dumps 1 nibble into buffer
+	sb $zero, 1($t2)	#dumps Null into second bufer space
+	move $a0, $t2		#prep for syscall
 	li $v0, 4
 	syscall
 	
