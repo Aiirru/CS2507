@@ -67,8 +67,8 @@ parse_complete:
 	mtc1 $s2, $f0	#moves into $f0
 	cvt.s.w $f0, $f0	#$f0 is = xxx.000
 	
-	mtc1 $s3 $f1
-	cvt.s.w $f1 $f1		#$f1 is = yyy.000
+	mtc1 $s3, $f1
+	cvt.s.w $f1, $f1		#$f1 is = yyy.000
 	
 	mtc1 $s4, $f2		#scale factor for yyy
 	cvt.s.w $f2, $f2
