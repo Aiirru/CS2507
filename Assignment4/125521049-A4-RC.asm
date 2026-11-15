@@ -153,13 +153,15 @@ __trap_exception:
 
 __interrupt: 
 	#######################################################
-	# >>>>>>>>>>>>>>> ASSIGNMENT PART 3 <<<<<<<<<<<<<<<#
+	# >>>>>>>>>>>>>>> ASSIGNMENT PART 3 <<<<<<<<<<<<<<<< #
 	#######################################################
 	# ASSIGNMENT TODO 3: Interrupt Identification/handling
 	# The value of cause register should already be in $k0.
 	# Test pending interrupt bits in a loop
 	# If the fired interrupt is a keyboard interrupt, execute the code @ __keyboard_interrupt (task #4)
 
+	andi $k1, $k0, 0x0100	#checks if bit 8 (keyboard interrupt) raised
+	bnez $k1, __keyboard_interrupt
 
 __unhandled_interrupt:    
   	#  Use the MARS built-in system call 4 (print string) to print error messsage.	
@@ -177,6 +179,7 @@ __unhandled_interrupt:
  	# Make any unecessary changes in ktext and kdata  to perform this task
 __keyboard_interrupt:     	
  	
+ 	nop	#adding this so i can put a break point to see if my keyboard interrupt gets this far
 	j __resume
 	
 
