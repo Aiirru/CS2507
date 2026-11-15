@@ -19,13 +19,23 @@ main:
 	li $s0, 0		#initialising $s0 to 0 for loop counter
 	li $s1, 0		#running counter
 	
+	
 	#######################################################
 	# >>>>>>>>>>>>>>> ASSIGNMENT PART 2 <<<<<<<<<<<<<<<<#
 	#######################################################
 	#ASSIGNMENT TODO 2:  Enable simulator keyboard interrupts.
 	# Hint: Get the value of the keyboard ""control"" register and 
 	# set the interrupt enable bit **WITHOUT** changing other bits
- 
+	
+	# Receiver Control register (low-order bit of 0xffff0000), found in tools help keyboard MMIO
+ 	
+ 	li $t0, 0xffff0000	#control reg address found from comment above
+ 	lw $t1, 0($t0)	#reading the received control register value
+ 	
+ 	ori $t1, $t1, 0x0002	#setting bit in position 1 and leaving all other unchanged
+ 	sw $t1, 0($t0)		#writing copy back into addresss, enabling interrupts
+ 	
+ 	
 
 infinite_loop: 		
 	#######################################################
@@ -35,6 +45,7 @@ infinite_loop:
 	# This infinite loop simulates the CPU doing something useful
 	# write down the code that would print 
 	# a line of your choice every 500 iterations
+	
 	addi $s0, $s0, 1
 	addi $s1, $s1, 1
 	beq $s0, 1000, print_msg
