@@ -76,6 +76,7 @@ UNHANDLED_INTERRUPT: 	.asciiz "===>      Unhandled interrupt       <===\n\n"
 OVERFLOW_EXCEPTION: 	.asciiz "===>      Arithmetic overflow       <===\n\n" 
 TRAP_EXCEPTION: 		.asciiz "===>         Trap exception         <===\n\n"
 BAD_ADRS_EXCEPTION: 	.asciiz "===>   Bad data address exception   <===\n\n"
+KEYBOARD_INTERRUPT:		.asciiz "===>	Keyboard Interrupt	     :  "
 # Variables for save/restore of registers used in the handler
 	save_v0:    .word   0
 	save_a0:    .word   0
@@ -180,6 +181,21 @@ __unhandled_interrupt:
 __keyboard_interrupt:     	
  	
  	nop	#adding this so i can put a break point to see if my keyboard interrupt gets this far
+ 	#low-order byte of memory word 0xffff0004
+ 	lw $k1, 0xffff0004
+ 	
+ 	li $v0, 4
+ 	la $a0, KEYBOARD_INTERRUPT
+ 	syscall
+ 	
+ 	li $v0, 11
+ 	move $a0, $k1	#loading char into $a0 so i can print
+ 	syscall
+ 	
+ 	li $v0, 11	#returning char
+ 	li $a0, '\n'	#new line char
+ 	syscall 
+ 	
 	j __resume
 	
 
