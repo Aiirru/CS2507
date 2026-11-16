@@ -182,7 +182,8 @@ __keyboard_interrupt:
  	
  	nop	#adding this so i can put a break point to see if my keyboard interrupt gets this far
  	#low-order byte of memory word 0xffff0004
- 	lw $k1, 0xffff0004
+ 	lui $k1, 0xffff
+ 	lw $k1, 4($k1)
  	
  	li $v0, 4
  	la $a0, KEYBOARD_INTERRUPT
